@@ -3,13 +3,13 @@
 #include <DallasTemperature.h>
 
 // Set periphery
-#define SET_TEMP 9 // Set DS18B20
+#define SET_TEMP 21 // Set DS18B20
 
-#define SET_FAN_FIRST 5  // Set Fan 1
-#define SET_FAN_SECOND 6 // Set Fan 2
+#define SET_FAN_FIRST 16  // Set Fan 1
+#define SET_FAN_SECOND 17 // Set Fan 2
 
-#define SET_TACH_FIRST 2  // Set tachometer 1
-#define SET_TACH_SECOND 3 // Set tachometer 2
+#define SET_TACH_FIRST 18  // Set tachometer 1
+#define SET_TACH_SECOND 19 // Set tachometer 2
 
 // Set operating mode
 #define MIN_TEMP 25   // min. temperature
@@ -88,7 +88,7 @@ void SerialDispelay()
 void setup()
 {
 
-  Serial.begin(9600);
+  Serial.begin(115200);
 
   pinMode(SET_FAN_FIRST, OUTPUT);
   pinMode(SET_FAN_SECOND, OUTPUT);
