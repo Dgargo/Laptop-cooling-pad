@@ -11,8 +11,12 @@
 #define SET_TACH_FIRST 18  // Set tachometer 1
 #define SET_TACH_SECOND 19 // Set tachometer 2
 
-//for Debuging 
+// Set time for task Manager
+#define TASK_TIME_CONTROL_SPEED 1000
+#define TASK_TIME_SERIAL_DISPLAY 2000
+// for Debuging
 #define DEBUG
+#define LED_DEBUG
 
 // Set operating mode
 extern int MIN_TEMP;  // min. temperature
@@ -37,4 +41,3 @@ extern float temperature;
 extern uint16_t timerOne, timerTwo;
 extern int timeFan;
 extern int timeDisplay;
-

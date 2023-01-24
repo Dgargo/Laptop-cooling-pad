@@ -1,11 +1,10 @@
 #include "config.h"
 
 // Set operating mode
-int MIN_TEMP = 20;// min. temperature
-int MAX_TEMP = 45;// max. temperature
-int MIN_SPEED = 50;// (0-255) min speed
-int MAX_SPEED = 255;// (0-255) max speed
-
+int MIN_TEMP = 20;   // min. temperature
+int MAX_TEMP = 40;   // max. temperature
+int MIN_SPEED = 25;  // (0-255) min speed
+int MAX_SPEED = 255; // (0-255) max speed
 // varies for set speed fans
 byte newFanSpeed = 0;
 byte fanSpeed = 0;

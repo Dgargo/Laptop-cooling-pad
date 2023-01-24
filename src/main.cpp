@@ -4,7 +4,10 @@
 
 #include "Fan.h"
 #include "config.h"
+
+#ifdef DEBUG
 #include "Serial.h"
+#endif
 
 // create classes for work with DS18B20
 OneWire DS18(SET_TEMP);
@@ -26,8 +29,8 @@ void setup()
 
 #ifdef DEBUG
   Serial.begin(115200);
-#endif 
-
+  pinMode(LED_DEBUG, OUTPUT);
+#endif
   pinMode(SET_FAN_FIRST, OUTPUT);
   pinMode(SET_FAN_SECOND, OUTPUT);
 
@@ -54,20 +57,25 @@ void loop()
     speedProcent = CalcSpeedProcent(speedProcent, fanSpeed, MAX_SPEED);
     count1 = 0;
     count2 = 0;
+
+#ifdef DEBUG
+    analogWrite(LED_DEBUG, fanSpeed);
+    Serial.print("FanSpeed = ");
+    Serial.println(fanSpeed);
+#endif
+// calculation of the number of revolutions
+    rmp1 = count1 * 60 / 2;
+    rmp2 = count2 * 60 / 2;
   }
 
   // show info
   uint16_t ms2 = millis() & 0xFFFF;
   if (ms2 - timerTwo > timeDisplay)
   {
-    timerTwo = ms2;
 
-    // calculation of the number of revolutions
-    rmp1 = count1 * 60 / 2;
-    rmp2 = count2 * 60 / 2;
-  
-  #ifdef DEGUG
+    timerTwo = ms2;
+#ifdef DEBUG
     SerialDispelay(temperature, speedProcent, rmp1, rmp2);
-  #endif
+#endif
   }
 }
