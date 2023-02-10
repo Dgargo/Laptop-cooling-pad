@@ -1,20 +1,14 @@
-#include "TaskManeger.h"
+#include "taskManeger.h"
 
 // Control speed
 void ControlSpeed(void *pvParameters)
 {
    while (true)
    {
-      // read from the temperature sensor
-      sensorTemp.requestTemperatures();
-      temperature = sensorTemp.getTempCByIndex(0);
-
-      newFanSpeed = tempToSpeed(newFanSpeed, temperature, MIN_TEMP, MAX_TEMP, MIN_SPEED, MAX_SPEED);
-      fanSpeed = TickFan(newFanSpeed, fanSpeed, MIN_SPEED, MAX_SPEED);
-      speedProcent = CalcSpeedProcent(speedProcent, fanSpeed, MAX_SPEED);
-      count1 = 0;
-      count2 = 0;
-
+      getTemp(sensorTemp,temperature);
+      tempToSpeed(newFanSpeed, temperature, MIN_TEMP, MAX_TEMP, MIN_SPEED, MAX_SPEED);
+      TickFan(newFanSpeed,fanSpeed, MIN_SPEED, MAX_SPEED);
+      CalcSpeedProcent(speedProcent, fanSpeed, MAX_SPEED);
 #ifdef DEBUG
       analogWrite(LED_DEBUG, fanSpeed);
       Serial.print("FanSpeed = ");
@@ -25,17 +19,29 @@ void ControlSpeed(void *pvParameters)
    }
 }
 
-// Control interrupt for tacho sensor
-void ControlInterrupt(void *pvParameters)
-{
-}
+
 
 // Show information in serial port
 void ControlSerial(void *pvParameters)
 {
    while (true)
    {
-      SerialDispelay(temperature, speedProcent, rmp1, rmp2);
+      SerialDispelay(temperature, speedProcent, rpm1, rpm2);
       vTaskDelay(TASK_TIME_SERIAL_DISPLAY / portTICK_RATE_MS);
    }
+}
+
+//Calculation RPM 
+void TachoTask(void *pvParameters)
+{
+  while(1)
+  {
+    vTaskDelay(TASK_TIME_CALCULATE_RPM/portTICK_RATE_MS);
+    rpm1 = counterTacho1 * 30 ;
+    rpm2 = counterTacho2 * 30 ;
+
+    counterTacho1=0;
+    counterTacho2=0;
+  }
+  vTaskDelete(NULL);
 }

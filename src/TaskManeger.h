@@ -1,12 +1,11 @@
 #include "config.h"
-#include "Fan.h"
-#include "Serial.h"
+#include "fan.h"
+#include "serial.h"
 
-//control Speed
+// control Speed
 void ControlSpeed(void *pvParameters);
-
-//Control interrupt for tacho sensor
-void ControlInterrupt(void *pvParameters);
 
 // Show information in serial port
 void ControlSerial(void *pvParameters);
+
+void TachoTask(void *pvParameters);

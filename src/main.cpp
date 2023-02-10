@@ -2,26 +2,22 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#include "Fan.h"
+#include "fan.h"
 #include "config.h"
-
+#include "taskManeger.h"
 #ifdef DEBUG
-#include "Serial.h"
+#include "serial.h"
 #endif
 
-// create classes for work with DS18B20
-OneWire DS18(SET_TEMP);
-DallasTemperature sensorTemp(&DS18);
 
-// interrupt handling
-void counter1()
+static void IRAM_ATTR intrHandlerOne(void *args)
 {
-  count1++;
+    counterTacho1++;
 }
 
-void counter2()
+static void IRAM_ATTR intrHandlerTwo(void *args)
 {
-  count2++;
+    counterTacho2++;
 }
 
 void setup()
@@ -30,52 +26,75 @@ void setup()
 #ifdef DEBUG
   Serial.begin(115200);
   pinMode(LED_DEBUG, OUTPUT);
+  vTaskDelay(1000 / portTICK_PERIOD_MS);
 #endif
+
   pinMode(SET_FAN_FIRST, OUTPUT);
   pinMode(SET_FAN_SECOND, OUTPUT);
 
   sensorTemp.begin();
   sensorTemp.setResolution(12); // set the resolution of the sensor from 9 to 12 bits
 
-  attachInterrupt(digitalPinToInterrupt(SET_TACH_FIRST), counter1, RISING);
-  attachInterrupt(digitalPinToInterrupt(SET_TACH_SECOND), counter2, RISING);
+  //config interrupt
+  gpio_set_intr_type(SET_TACHO_FIRST,GPIO_INTR_POSEDGE);
+  gpio_install_isr_service(0);
+  gpio_isr_handler_add(SET_TACHO_FIRST,intrHandlerOne,NULL);
+
+  gpio_set_intr_type(SET_TACHO_SECOND,GPIO_INTR_POSEDGE);
+  gpio_install_isr_service(1);
+  gpio_isr_handler_add(SET_TACHO_SECOND,intrHandlerTwo,NULL);
+
+  //config timer for interrupt
+  ledc_timer_config_t ledc_timer1 = {
+        .speed_mode       = LEDC_LOW_SPEED_MODE,
+        .duty_resolution  = LEDC_TIMER_10_BIT,
+        .timer_num        = LEDC_TIMER_0,
+        .freq_hz          = 25000,
+        .clk_cfg          = LEDC_AUTO_CLK
+    };
+  ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer1));
+
+  ledc_timer_config_t ledc_timer2 = {
+        .speed_mode       = LEDC_LOW_SPEED_MODE,
+        .duty_resolution  = LEDC_TIMER_10_BIT,
+        .timer_num        = LEDC_TIMER_1,
+        .freq_hz          = 25000,
+        .clk_cfg          = LEDC_AUTO_CLK
+    };
+  ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer2));
+
+  //config for PWM
+  ledc_channel_config_t ledc_channel = {
+        .gpio_num       = SET_FAN_FIRST,
+        .speed_mode     = LEDC_LOW_SPEED_MODE,
+        .channel        = LEDC_CHANNEL_0,
+        .timer_sel      = LEDC_TIMER_0,
+        .duty           = fanSpeed,
+        .hpoint         = 0
+    };
+  ESP_ERROR_CHECK(ledc_channel_config(&ledc_channel));
+
+
+  //config for PWM
+  ledc_channel_config_t ledc_channe2 = {
+        .gpio_num       = SET_FAN_FIRST,
+        .speed_mode     = LEDC_LOW_SPEED_MODE,
+        .channel        = LEDC_CHANNEL_1,
+        .timer_sel      = LEDC_TIMER_1,
+        .duty           = fanSpeed,
+        .hpoint         = 0
+    };
+  ESP_ERROR_CHECK(ledc_channel_config(&ledc_channe2));
+
+  xTaskCreate(ControlSpeed, "Control Speeed", 1024, NULL, 1, NULL);
+
+  xTaskCreate(TachoTask, "Tacho Task",2048,NULL,20,NULL);
+#ifdef DEBUG
+  xTaskCreate(ControlSerial, "Control Serial", 2048, NULL, 1, NULL);
+#endif
+
 }
 
 void loop()
 {
-  // control speed
-  uint16_t ms1 = millis() & 0xFFFF;
-  if (ms1 - timerOne > timeFan)
-  {
-    timerOne = ms1;
-    // read from the temperature sensor
-    sensorTemp.requestTemperatures();
-    temperature = sensorTemp.getTempCByIndex(0);
-
-    newFanSpeed = tempToSpeed(newFanSpeed, temperature, MIN_TEMP, MAX_TEMP, MIN_SPEED, MAX_SPEED);
-    fanSpeed = TickFan(newFanSpeed, fanSpeed, MIN_SPEED, MAX_SPEED);
-    speedProcent = CalcSpeedProcent(speedProcent, fanSpeed, MAX_SPEED);
-    count1 = 0;
-    count2 = 0;
-
-#ifdef DEBUG
-    analogWrite(LED_DEBUG, fanSpeed);
-    Serial.print("FanSpeed = ");
-    Serial.println(fanSpeed);
-#endif
-// calculation of the number of revolutions
-    rmp1 = count1 * 60 / 2;
-    rmp2 = count2 * 60 / 2;
-  }
-
-  // show info
-  uint16_t ms2 = millis() & 0xFFFF;
-  if (ms2 - timerTwo > timeDisplay)
-  {
-
-    timerTwo = ms2;
-#ifdef DEBUG
-    SerialDispelay(temperature, speedProcent, rmp1, rmp2);
-#endif
-  }
 }
