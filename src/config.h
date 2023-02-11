@@ -5,7 +5,7 @@
 #include <driver/ledc.h>
 
 // Set periphery
-#define SET_TEMP GPIO_NUM_21  // Set DS18B20
+#define SET_TEMP GPIO_NUM_32  // Set DS18B20
 
 #define SET_FAN_FIRST GPIO_NUM_16   // Set Fan 1
 #define SET_FAN_SECOND GPIO_NUM_17  // Set Fan 2
@@ -14,7 +14,7 @@
 #define SET_TACHO_SECOND GPIO_NUM_19 // Set tachometer 2
 
 // Set time for task Manager
-#define TASK_TIME_CONTROL_SPEED 1000
+#define TASK_TIME_CONTROL_SPEED 2000
 #define TASK_TIME_CALCULATE_RPM 1000
 #define TASK_TIME_SERIAL_DISPLAY 2000
 // for Debuging
@@ -28,8 +28,8 @@ extern uint32_t MIN_SPEED; // (0-255) min speed
 extern uint32_t MAX_SPEED; // (0-255) max speed
 
 // varies for set speed fans
-extern byte newFanSpeed;
-extern byte fanSpeed;
+extern u_int32_t newFanSpeed;
+extern u_int32_t fanSpeed;
 extern float speedProcent; // for display fan speed in procent
 
 // varies for tachometer

@@ -33,7 +33,7 @@ void setup()
   pinMode(SET_FAN_SECOND, OUTPUT);
 
   sensorTemp.begin();
-  sensorTemp.setResolution(12); // set the resolution of the sensor from 9 to 12 bits
+  //sensorTemp.setResolution(12); // set the resolution of the sensor from 9 to 12 bits
 
   //config interrupt
   gpio_set_intr_type(SET_TACHO_FIRST,GPIO_INTR_POSEDGE);

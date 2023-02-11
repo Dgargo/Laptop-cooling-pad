@@ -36,12 +36,9 @@ void TachoTask(void *pvParameters)
 {
   while(1)
   {
+    CaclRPM(counterTacho1,counterTacho2,rpm1,rpm2);
     vTaskDelay(TASK_TIME_CALCULATE_RPM/portTICK_RATE_MS);
-    rpm1 = counterTacho1 * 30 ;
-    rpm2 = counterTacho2 * 30 ;
-
-    counterTacho1=0;
-    counterTacho2=0;
+    
   }
   vTaskDelete(NULL);
 }
