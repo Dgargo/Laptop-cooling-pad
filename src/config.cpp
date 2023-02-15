@@ -1,5 +1,5 @@
 #include "config.h"
-
+#include <Arduino.h>
 // Set operating mode
 uint32_t minTemp = 20;   // min. temperature
 uint32_t maxTemp = 60;   // max. temperature
@@ -18,10 +18,6 @@ uint32_t rpm2;
 
 float temperature;
 
-// create classes for work with DS18B20
-OneWire DS18(SET_TEMP);
-DallasTemperature sensorTemp(&DS18);
-
-
-char ssid[] = "OD-Wifi";
-char pass[] = "2001_oleksiy";
+//varies for Wifi and Blynk connection
+char ssid[] = "";
+char pass[] = "";

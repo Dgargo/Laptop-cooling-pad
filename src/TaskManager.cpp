@@ -1,4 +1,6 @@
 #include "taskManeger.h"
+
+#include <Arduino.h>
 #include <BlynkSimpleEsp32.h>
 #include <WiFi.h>
 #include <WiFiClient.h>
@@ -61,3 +63,4 @@ void Task_Blynk_Loop(void * pvParameters){
      delay(1);
   }
 }
+

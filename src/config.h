@@ -1,8 +1,5 @@
 #pragma once
 #include <Arduino.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <driver/ledc.h>
 
 // Set periphery
 #define SET_TEMP GPIO_NUM_32  // Set DS18B20
@@ -40,14 +37,10 @@ extern uint32_t rpm2;
 
 extern float temperature;
 
-// create classes for work with DS18B20
-extern OneWire DS18;
-extern DallasTemperature sensorTemp;
-
 //varies for Wifi and Blynk connection
-#define BLYNK_TEMPLATE_ID "TMPLZh5DjYHD"
+#define BLYNK_TEMPLATE_ID ""
 #define BLYNK_TEMPLATE_NAME "Iot Laptop pad"
-#define BLYNK_AUTH_TOKEN "lL8ivsVv3BsLnAiMhr6UBugXptAjA6fA"
+#define BLYNK_AUTH_TOKEN ""
 
 //#define BLYNK_PRINT Serial
 

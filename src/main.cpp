@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <driver/ledc.h>
 
 #include "fan.h"
 #include "config.h"

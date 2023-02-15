@@ -1,6 +1,11 @@
 #pragma once
 #include "config.h"
+#include <DallasTemperature.h>
+#include <OneWire.h>
 
+// create classes for work with DS18B20
+extern OneWire DS18;
+extern DallasTemperature sensorTemp;
 // read from the temperature sensor
 void Get_Temp(DallasTemperature sensorTemp , float &temperature);
 
