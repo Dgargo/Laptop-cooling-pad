@@ -1,3 +1,4 @@
+
 #include <Arduino.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -9,13 +10,12 @@
 #include "serial.h"
 #endif
 
-
-static void IRAM_ATTR intrHandlerOne(void *args)
+static void IRAM_ATTR Intr_Handler_One(void *args)
 {
     counterTacho1++;
 }
 
-static void IRAM_ATTR intrHandlerTwo(void *args)
+static void IRAM_ATTR Intr_Handler_Two(void *args)
 {
     counterTacho2++;
 }
@@ -38,11 +38,11 @@ void setup()
   //config interrupt
   gpio_set_intr_type(SET_TACHO_FIRST,GPIO_INTR_POSEDGE);
   gpio_install_isr_service(0);
-  gpio_isr_handler_add(SET_TACHO_FIRST,intrHandlerOne,NULL);
+  gpio_isr_handler_add(SET_TACHO_FIRST,Intr_Handler_One,NULL);
 
   gpio_set_intr_type(SET_TACHO_SECOND,GPIO_INTR_POSEDGE);
   gpio_install_isr_service(1);
-  gpio_isr_handler_add(SET_TACHO_SECOND,intrHandlerTwo,NULL);
+  gpio_isr_handler_add(SET_TACHO_SECOND,Intr_Handler_Two,NULL);
 
   //config timer for interrupt
   ledc_timer_config_t ledc_timer1 = {
@@ -86,11 +86,11 @@ void setup()
     };
   ESP_ERROR_CHECK(ledc_channel_config(&ledc_channe2));
 
-  xTaskCreate(ControlSpeed, "Control Speeed", 1024, NULL, 1, NULL);
+  xTaskCreate(Control_Speed, "Control Speeed", 1024, NULL, 1, NULL);
 
-  xTaskCreate(TachoTask, "Tacho Task",2048,NULL,20,NULL);
+  xTaskCreate(Tacho_Task, "Tacho Task",2048,NULL,20,NULL);
 #ifdef DEBUG
-  xTaskCreate(ControlSerial, "Control Serial", 2048, NULL, 1, NULL);
+  xTaskCreate(Control_Serial, "Control Serial", 2048, NULL, 1, NULL);
 #endif
 
 }

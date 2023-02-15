@@ -1,10 +1,10 @@
 #include "config.h"
 
 // Set operating mode
-uint32_t MIN_TEMP = 20;   // min. temperature
-uint32_t MAX_TEMP = 60;   // max. temperature
-uint32_t MIN_SPEED = 500; // (0-1022) min speed
-uint32_t MAX_SPEED = 1023; // (1-1023) max speed
+uint32_t minTemp = 20;   // min. temperature
+uint32_t maxTemp = 60;   // max. temperature
+uint32_t minSpeed = 500; // (0-1022) min speed
+uint32_t maxSpeed = 1023; // (1-1023) max speed
 // varies for set speed fans
 u_int32_t newFanSpeed = 0;
 u_int32_t fanSpeed = 100;
@@ -21,4 +21,5 @@ float temperature;
 // create classes for work with DS18B20
 OneWire DS18(SET_TEMP);
 DallasTemperature sensorTemp(&DS18);
+
 

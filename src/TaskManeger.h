@@ -1,11 +1,14 @@
+#pragma once
 #include "config.h"
 #include "fan.h"
 #include "serial.h"
 
 // control Speed
-void ControlSpeed(void *pvParameters);
+void Control_Speed(void *pvParameters);
 
 // Show information in serial port
-void ControlSerial(void *pvParameters);
+void Control_Serial(void *pvParameters);
 
-void TachoTask(void *pvParameters);
+void Tacho_Task(void *pvParameters);
+
+void Task_Blynk_Loop(void * pvParameters);

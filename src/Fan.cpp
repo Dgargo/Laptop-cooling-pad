@@ -1,7 +1,7 @@
 #include "fan.h"
 
 
-void getTemp(DallasTemperature sensorTemp , float &temperature)
+void Get_Temp(DallasTemperature sensorTemp , float &temperature)
 {
   sensorTemp.requestTemperatures();
   temperature = sensorTemp.getTempCByIndex(0);
@@ -12,21 +12,21 @@ void getTemp(DallasTemperature sensorTemp , float &temperature)
 }
 
 // Convert temperature from sensor in Speed
-void tempToSpeed(u_int32_t &newFanSpeed, float temperature, u_int32_t MIN_TEMP, u_int32_t MAX_TEMP, u_int32_t MIN_SPEED, u_int32_t MAX_SPEED)
+void Temp_To_Speed(u_int32_t &newFanSpeed, float temperature, u_int32_t minTemp, u_int32_t maxTemp, u_int32_t minSpeed, u_int32_t maxSpeed)
 {
-  newFanSpeed = map(temperature,MIN_TEMP,MAX_TEMP,MIN_SPEED,MAX_SPEED);
-  newFanSpeed = constrain(newFanSpeed, MIN_SPEED, MAX_SPEED);
+  newFanSpeed = map(temperature,minTemp,maxTemp,minSpeed,maxSpeed);
+  newFanSpeed = constrain(newFanSpeed, minSpeed, maxSpeed);
   
 }
 
 // Smooth speed control
-void TickFan(u_int32_t newFanSpeed, u_int32_t &fanSpeed, u_int32_t MIN_SPEED, u_int32_t MAX_SPEED)
+void Tick_Fan(u_int32_t newFanSpeed, u_int32_t &fanSpeed, u_int32_t minSpeed, u_int32_t maxSpeed)
 {
   if (newFanSpeed > fanSpeed)
     fanSpeed += 4;
   if (newFanSpeed < fanSpeed)
     fanSpeed -= 4;
-  fanSpeed = constrain(fanSpeed, MIN_SPEED, MAX_SPEED);
+  fanSpeed = constrain(fanSpeed, minSpeed, maxSpeed);
   ESP_ERROR_CHECK(ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, fanSpeed));
   ESP_ERROR_CHECK(ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
   ESP_ERROR_CHECK(ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_1, fanSpeed));
@@ -35,9 +35,9 @@ void TickFan(u_int32_t newFanSpeed, u_int32_t &fanSpeed, u_int32_t MIN_SPEED, u_
 }
 
 // calculate speedProcent
-void CalcSpeedProcent(float &speedProcent, u_int32_t fanSpeed, u_int32_t MAX_SPEED)
+void Calc_Speed_Procent(float &speedProcent, u_int32_t fanSpeed, u_int32_t maxSpeed)
 {
-  speedProcent = (fanSpeed * 100) / MAX_SPEED;
+  speedProcent = (fanSpeed * 100) / maxSpeed;
 }
 
 void CaclRPM(uint32_t &counterTacho1,uint32_t &counterTacho2,u_int32_t &rpm1,u_int32_t &rpm2)
@@ -48,3 +48,5 @@ void CaclRPM(uint32_t &counterTacho1,uint32_t &counterTacho2,u_int32_t &rpm1,u_i
     counterTacho1=0;
     counterTacho2=0;
 }
+
+

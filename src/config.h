@@ -22,10 +22,10 @@
 #define LED_DEBUG GPIO_NUM_21
 
 // Set operating mode
-extern uint32_t MIN_TEMP;  // min. temperature
-extern uint32_t MAX_TEMP;  // max. temperature
-extern uint32_t MIN_SPEED; // (0-255) min speed
-extern uint32_t MAX_SPEED; // (0-255) max speed
+extern uint32_t minTemp;  // min. temperature
+extern uint32_t maxTemp;  // max. temperature
+extern uint32_t minSpeed; // (0-255) min speed
+extern uint32_t maxSpeed; // (0-255) max speed
 
 // varies for set speed fans
 extern u_int32_t newFanSpeed;
@@ -43,6 +43,9 @@ extern float temperature;
 // create classes for work with DS18B20
 extern OneWire DS18;
 extern DallasTemperature sensorTemp;
+
+
+
 
 
 

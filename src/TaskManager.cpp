@@ -1,14 +1,14 @@
 #include "taskManeger.h"
 
 // Control speed
-void ControlSpeed(void *pvParameters)
+void Control_Speed(void *pvParameters)
 {
    while (true)
    {
-      getTemp(sensorTemp,temperature);
-      tempToSpeed(newFanSpeed, temperature, MIN_TEMP, MAX_TEMP, MIN_SPEED, MAX_SPEED);
-      TickFan(newFanSpeed,fanSpeed, MIN_SPEED, MAX_SPEED);
-      CalcSpeedProcent(speedProcent, fanSpeed, MAX_SPEED);
+      Get_Temp(sensorTemp,temperature);
+      Temp_To_Speed(newFanSpeed, temperature, minTemp, maxTemp, minSpeed, maxSpeed);
+      Tick_Fan(newFanSpeed,fanSpeed, minSpeed, maxSpeed);
+      Calc_Speed_Procent(speedProcent, fanSpeed, maxSpeed);
 #ifdef DEBUG
       analogWrite(LED_DEBUG, fanSpeed);
       Serial.print("FanSpeed = ");
@@ -22,17 +22,17 @@ void ControlSpeed(void *pvParameters)
 
 
 // Show information in serial port
-void ControlSerial(void *pvParameters)
+void Control_Serial(void *pvParameters)
 {
    while (true)
    {
-      SerialDispelay(temperature, speedProcent, rpm1, rpm2);
+      Serial_Display(temperature, speedProcent, rpm1, rpm2);
       vTaskDelay(TASK_TIME_SERIAL_DISPLAY / portTICK_RATE_MS);
    }
 }
 
 //Calculation RPM 
-void TachoTask(void *pvParameters)
+void Tacho_Task(void *pvParameters)
 {
   while(1)
   {
@@ -42,3 +42,4 @@ void TachoTask(void *pvParameters)
   }
   vTaskDelete(NULL);
 }
+

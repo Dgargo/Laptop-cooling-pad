@@ -1,7 +1,7 @@
 #include "serial.h"
 
 // Show information in serial port
-void SerialDispelay(float temperature, float speedProcent, int rpm1, int rpm2)
+void Serial_Display(float temperature, float speedProcent, int rpm1, int rpm2)
 {
   Serial.print(F("Temp C: "));
   Serial.print(temperature);
