@@ -1,4 +1,7 @@
 #include "taskManeger.h"
+#include <BlynkSimpleEsp32.h>
+#include <WiFi.h>
+#include <WiFiClient.h>
 
 // Control speed
 void Control_Speed(void *pvParameters)
@@ -43,3 +46,18 @@ void Tacho_Task(void *pvParameters)
   vTaskDelete(NULL);
 }
 
+
+void Task_Blynk_Loop(void * pvParameters){
+  (void)pvParameters;
+  
+  Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);  
+  while (Blynk.connected() == false) {
+  }
+  Serial.println();
+  Serial.println("Blynk Connected");
+  Serial.println("Blynk Loop Task Started");
+  while (1) {
+     Blynk.run();
+     delay(1);
+  }
+}
