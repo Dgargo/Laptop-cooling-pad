@@ -11,4 +11,3 @@ void Control_Serial(void *pvParameters);
 
 void Tacho_Task(void *pvParameters);
 
-void Task_Blynk_Loop(void * pvParameters);

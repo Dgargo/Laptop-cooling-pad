@@ -44,15 +44,7 @@ extern float temperature;
 extern OneWire DS18;
 extern DallasTemperature sensorTemp;
 
-//varies for Wifi and Blynk connection
-#define BLYNK_TEMPLATE_ID "TMPLZh5DjYHD"
-#define BLYNK_TEMPLATE_NAME "Iot Laptop pad"
-#define BLYNK_AUTH_TOKEN "lL8ivsVv3BsLnAiMhr6UBugXptAjA6fA"
 
-//#define BLYNK_PRINT Serial
-
-extern char ssid[];
-extern char pass[];
 
 
 

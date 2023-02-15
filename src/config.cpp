@@ -22,6 +22,3 @@ float temperature;
 OneWire DS18(SET_TEMP);
 DallasTemperature sensorTemp(&DS18);
 
-
-char ssid[] = "OD-Wifi";
-char pass[] = "2001_oleksiy";
