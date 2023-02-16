@@ -1,5 +1,5 @@
 #include "config.h"
-#include <Arduino.h>
+
 
 // Set operating mode
 uint32_t minTemp = 20;   // min. temperature
