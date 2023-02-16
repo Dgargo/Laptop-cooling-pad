@@ -19,5 +19,5 @@ uint32_t rpm2;
 float temperature;
 
 //varies for Wifi and Blynk connection
-char ssid[] = "";
-char pass[] = "";
+char ssid[] = "";//enter name wifi
+char pass[] = "";//enter password wifi

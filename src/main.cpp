@@ -3,7 +3,6 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <driver/ledc.h>
-
 #include "fan.h"
 #include "config.h"
 #include "taskManeger.h"
@@ -20,6 +19,8 @@ static void IRAM_ATTR Intr_Handler_Two(void *args)
 {
     counterTacho2++;
 }
+
+
 
 void setup()
 {
@@ -78,7 +79,7 @@ void setup()
 
   //config for PWM
   ledc_channel_config_t ledc_channe2 = {
-        .gpio_num       = SET_FAN_FIRST,
+        .gpio_num       = SET_FAN_SECOND,
         .speed_mode     = LEDC_LOW_SPEED_MODE,
         .channel        = LEDC_CHANNEL_1,
         .timer_sel      = LEDC_TIMER_1,
@@ -87,12 +88,18 @@ void setup()
     };
   ESP_ERROR_CHECK(ledc_channel_config(&ledc_channe2));
 
-  xTaskCreate(Control_Speed, "Control Speeed", 1024, NULL, 1, NULL);
+  xTaskCreate(Task_Control_Speed, "Control Speeed", 1024, NULL, 1, NULL);
 
-  xTaskCreate(Tacho_Task, "Tacho Task",2048,NULL,20,NULL);
+  xTaskCreate(Task_Tacho, "Tacho Task",2048,NULL,20,NULL);
+
+  xTaskCreate(Task_Blynk_Loop,"Blynk loop",2048,NULL,1,NULL);
+
+  xTaskCreate(Task_Update_Data,"Update data",4096,NULL,1,NULL);
+
 #ifdef DEBUG
-  xTaskCreate(Control_Serial, "Control Serial", 2048, NULL, 1, NULL);
+  xTaskCreate(Task_Control_Serial, "Control Serial", 2048, NULL, 1, NULL);
 #endif
+
 
 }
 

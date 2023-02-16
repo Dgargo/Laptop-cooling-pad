@@ -14,6 +14,7 @@
 #define TASK_TIME_CONTROL_SPEED 2000
 #define TASK_TIME_CALCULATE_RPM 1000
 #define TASK_TIME_SERIAL_DISPLAY 2000
+#define TASK_TIME_UPDATE_DATA 10000
 // for Debuging
 #define DEBUG
 #define LED_DEBUG GPIO_NUM_21
@@ -40,7 +41,7 @@ extern float temperature;
 //varies for Wifi and Blynk connection
 #define BLYNK_TEMPLATE_ID ""
 #define BLYNK_TEMPLATE_NAME "Iot Laptop pad"
-#define BLYNK_AUTH_TOKEN ""
+#define BLYNK_AUTH_TOKEN ""//token device
 
 //#define BLYNK_PRINT Serial
 
