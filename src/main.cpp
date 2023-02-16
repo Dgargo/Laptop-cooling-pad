@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
+#include <driver/ledc.h>
 
 #include "fan.h"
 #include "config.h"
@@ -77,7 +78,7 @@ void setup()
 
   //config for PWM
   ledc_channel_config_t ledc_channe2 = {
-        .gpio_num       = SET_FAN_FIRST,
+        .gpio_num       = SET_FAN_SECOND,
         .speed_mode     = LEDC_LOW_SPEED_MODE,
         .channel        = LEDC_CHANNEL_1,
         .timer_sel      = LEDC_TIMER_1,

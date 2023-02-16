@@ -1,5 +1,6 @@
 #include "serial.h"
 
+#include <Arduino.h>
 // Show information in serial port
 void Serial_Display(float temperature, float speedProcent, int rpm1, int rpm2)
 {

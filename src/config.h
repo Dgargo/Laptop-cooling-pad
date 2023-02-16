@@ -1,8 +1,6 @@
 #pragma once
 #include <Arduino.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <driver/ledc.h>
+
 
 // Set periphery
 #define SET_TEMP GPIO_NUM_32  // Set DS18B20
@@ -40,9 +38,6 @@ extern uint32_t rpm2;
 
 extern float temperature;
 
-// create classes for work with DS18B20
-extern OneWire DS18;
-extern DallasTemperature sensorTemp;
 
 
 

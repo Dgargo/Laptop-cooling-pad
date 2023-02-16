@@ -1,4 +1,5 @@
 #include "config.h"
+#include <Arduino.h>
 
 // Set operating mode
 uint32_t minTemp = 20;   // min. temperature
@@ -18,7 +19,5 @@ uint32_t rpm2;
 
 float temperature;
 
-// create classes for work with DS18B20
-OneWire DS18(SET_TEMP);
-DallasTemperature sensorTemp(&DS18);
+
 

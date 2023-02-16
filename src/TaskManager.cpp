@@ -1,5 +1,6 @@
 #include "taskManeger.h"
 
+#include <Arduino.h>
 
 // Control speed
 void Control_Speed(void *pvParameters)

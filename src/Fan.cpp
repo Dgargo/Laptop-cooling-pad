@@ -1,14 +1,19 @@
 #include "fan.h"
+#include <driver/ledc.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Arduino.h>
+
+
+// create classes for work with DS18B20
+OneWire DS18(SET_TEMP);
+DallasTemperature sensorTemp(&DS18);
 
 
 void Get_Temp(DallasTemperature sensorTemp , float &temperature)
 {
   sensorTemp.requestTemperatures();
   temperature = sensorTemp.getTempCByIndex(0);
-  #ifdef DEBUG
-  Serial.print("temp");
-  Serial.println(temperature);
-  #endif
 }
 
 // Convert temperature from sensor in Speed
