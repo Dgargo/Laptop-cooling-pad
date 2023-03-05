@@ -1,6 +1,5 @@
 #pragma once
 #include "config.h"
-
 #include <DallasTemperature.h>
 #include <OneWire.h>
 

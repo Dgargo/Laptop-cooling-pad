@@ -3,14 +3,18 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <driver/ledc.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
 
 #include "fan.h"
 #include "config.h"
 #include "taskManeger.h"
+#include "MQTT.h"
 #ifdef DEBUG
 #include "serial.h"
 #endif
 
+//interput for tachometr
 static void IRAM_ATTR Intr_Handler_One(void *args)
 {
     counterTacho1++;
@@ -23,18 +27,19 @@ static void IRAM_ATTR Intr_Handler_Two(void *args)
 
 void setup()
 {
+  Serial.begin(115200);
 
 #ifdef DEBUG
-  Serial.begin(115200);
   pinMode(LED_DEBUG, OUTPUT);
   vTaskDelay(1000 / portTICK_PERIOD_MS);
 #endif
 
-  pinMode(SET_FAN_FIRST, OUTPUT);
-  pinMode(SET_FAN_SECOND, OUTPUT);
-
+  //sensor DS18B20 begin work
   sensorTemp.begin();
-  //sensorTemp.setResolution(12); // set the resolution of the sensor from 9 to 12 bits
+
+  //semaphore create 
+  sema_MQTT_KeepAlive   = xSemaphoreCreateBinary();
+  xSemaphoreGive( sema_MQTT_KeepAlive );
 
   //config interrupt
   gpio_set_intr_type(SET_TACHO_FIRST,GPIO_INTR_POSEDGE);
@@ -87,11 +92,22 @@ void setup()
     };
   ESP_ERROR_CHECK(ledc_channel_config(&ledc_channe2));
 
-  xTaskCreate(Control_Speed, "Control Speeed", 1024, NULL, 1, NULL);
+  MQTT_Client.setCallback(Callback);
+  
 
+  //Create task
+  //Task control fan speed
+  xTaskCreate(Control_Speed_Task, "Control Speeed", 1024, NULL, 1, NULL);
+  //Task control tacho fan
   xTaskCreate(Tacho_Task, "Tacho Task",2048,NULL,20,NULL);
+  //Task connection MQTT
+  xTaskCreatePinnedToCore( MQTT_Keep_Alive_Task, "MQTT_Keep_Alive_Task", 10000, NULL, 3, NULL, 1 );
+  //Task subcribe topics 
+  xTaskCreatePinnedToCore( Subscribe_Topics_Task, "Subscribe_Topics_Task", 10000, NULL, 3, NULL, 1);
+  //Task Publish topics
+  xTaskCreate(Publish_Task,"Publish_Task",4092,NULL,1,NULL);
 #ifdef DEBUG
-  xTaskCreate(Control_Serial, "Control Serial", 2048, NULL, 1, NULL);
+  xTaskCreate(Control_Serial_Task, "Control Serial", 2048, NULL, 1, NULL);
 #endif
 
 }

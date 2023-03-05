@@ -31,7 +31,7 @@ void Tick_Fan(u_int32_t newFanSpeed, u_int32_t &fanSpeed, u_int32_t minSpeed, u_
     fanSpeed += 4;
   if (newFanSpeed < fanSpeed)
     fanSpeed -= 4;
-  fanSpeed = constrain(fanSpeed, minSpeed, maxSpeed);
+  //fanSpeed = constrain(fanSpeed, minSpeed, maxSpeed);
   ESP_ERROR_CHECK(ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, fanSpeed));
   ESP_ERROR_CHECK(ledc_update_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0));
   ESP_ERROR_CHECK(ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_1, fanSpeed));
